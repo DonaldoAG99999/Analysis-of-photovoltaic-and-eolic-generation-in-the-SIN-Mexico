@@ -126,27 +126,37 @@ showInterpol(newXH,y_YIntH,y_GIntH,y_BIntH,26,"CURVA PATO MIERCOLES 13 DE MAYO D
 
 %...............................Igualando los extremos de la curva de
 %....................................generacion solar y eolica.............
+%Calculo de límites G-Y
+dif = 1;
+factor_dif=10;
+step_compare = 10;
+for ii = length(y_GInt)/2:-1:0
+    if (y_YInt(ii)-y_GInt(ii)) > dif*factor_dif && (y_YInt(ii-step_compare)-y_GInt(ii-step_compare)) < dif
+      lim_inf_ind = ii-step_compare;
+        break
+    end
 
-% dif_small = 1;
-% dif_big = 2;
-% for ii = 1:length(y_GInt)-1
-%     if y_Yint(ii)-y_GInt(ii) < dif_small && if y_Yint(ii+1)-y_GInt(ii+1) > dif_big
-%       lim_inf_ind = ii
-%     elseif y_Yint(ii)-y_GInt(ii) > dif_big && if y_Yint(ii+1)-y_GInt(ii+1) < dif_small
-%       lim_sup_ind = ii+1
-%     end
-% 
-% end
-% disp('Inferior Limit:'+num2str(lim_inf_ind))
-% disp('Superior Limit:'+num2str(lim_sup_ind))
+end
+for ii = length(y_GInt)/2:1:length(y_GInt)-step_compare
+    if (y_YInt(ii)-y_GInt(ii)) > dif*factor_dif && (y_YInt(ii+step_compare)-y_GInt(ii+step_compare)) < dif
+      lim_sup_ind = ii+step_compare;
+        break
+    end
+    disp(ii)
+end
+
+disp('Inferior limit:')
+disp(lim_inf_ind)
+disp('Superior Limit:')
+disp(lim_sup_ind)
 
 switch (day)
     case 1
-        index_0 = find(newXM == 456);
-        index_f = find(newXM == 1239);
+        index_0 = lim_inf_ind;
+        index_f = lim_sup_ind;
     case 2
-        index_0 = find( newXM == 448);
-        index_f = find( newXM == 1244);
+        index_0 = lim_inf_ind;
+        index_f = lim_sup_ind;
     case 3
         index_0 = find( newXM == 438);
         index_f = find( newXM == 1261);        
